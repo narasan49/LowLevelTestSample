@@ -8,6 +8,10 @@
 			"Name": "LowLevelTestSample",
 			"Type": "Runtime",
 			"LoadingPhase": "Default"
+		},
+		{
+			"Name": "MyModule",
+			"Type": "Runtime"
 		}
 	],
 	"Plugins": [
