@@ -22,7 +22,7 @@ https://github.com/narasan49/LowLevelTestSample
 
 と、ドキュメントにあるように、UEの主要な機能も利用することができるようです。
 
-低レベルテストを利用すると、以下のようにテストを記述することができ、Visual Studioのテストエクスプローラーからも一覧を見ることができるようになります。  
+低レベルテストを利用すると、以下のようにテストを記述することができ、Visual Studioのテストエクスプローラーからも一覧を見ることができるようになります([Rider](https://www.jetbrains.com/ja-jp/rider/)は既存のテストもIDE上で表示・実行です。Visual Studio 2022も私は未確認ですが[バージョン17.8](https://learn.microsoft.com/ja-jp/visualstudio/releases/2022/release-notes#c-and-game-development-1)で対応したようです)。  
 ```cpp
 #include "CoreMinimal.h"
 #include "TestHarness.h"
@@ -30,7 +30,7 @@ https://github.com/narasan49/LowLevelTestSample
 #include "MyObject.h"
 
 namespace LowLevelTestSample {
-	TEST_CASE("Name of Test", "[unit]")
+    TEST_CASE("TestSample", "[unit]")
 	{
 		SECTION("Sample")
 		{
@@ -99,8 +99,6 @@ namespace LowLevelTestSample {
             {
                 "MyModule",
             });
-
-            UpdateBuildGraphPropertiesFile(new Metadata { TestName = "MyModule", TestShortName = "MyModule" });
         }
     }
     ```
@@ -146,7 +144,7 @@ UE5.3時点では、テストモジュール用のクラスをLauncher版で利�
 
 ![img](images/ErrorInInstalledEngine.png)
 
-#### ターゲットファイル
+### ターゲットファイル
 こちらも、テストモジュール用のベースクラス`TestTargetRules`を継承します。  
 `MyModuleTestsTarget`のコンストラクタ内で、`bCompileAgainstApplicationCore`などにより、エンジンの構成の有無を選択することができ、必要最低限のものを選択することでビルド時間を最小限にすることができます。
 
@@ -163,7 +161,7 @@ UE5.3時点では、テストモジュール用のクラスをLauncher版で利�
     ```
 のようにビルドのタスク数が変わることがわかります。そのため、テストのビルド時間を可能な限り小さくする意味でも、プロジェクトをモジュールに分割することに意味がありそうです。  
 
-### テストを記述する
+## テストを記述する
 では、長くなりましたがこれでテストを実行する準備が整いましたので、実際にテストを書いてみます。
 MyModuleに適当なクラスを定義し、
 ```cpp
@@ -198,7 +196,7 @@ namespace LowLevelTestSample {
 - 詳細なテストの記述方法は、[Catch2](https://github.com/catchorg/Catch2)のドキュメントをご確認ください。
 
 
-### ビルド・実行する
+## ビルド・実行する
 UnrealVS拡張機能をインストールしている場合、拡張機能のツールバーからテストモジュールを選択します(ツールバーが見当たらない場合はメニューバーの「拡張機能」>「メニューのカスタマイズ」から、「ツールバー」> 「UnrealVS」を有効にしてください)。  
 単にソリューションエクスプローラーなどからプロジェクトをビルドすることも可能です。
 ![img](images/BuildTestModule_UnrealVS.png)  
@@ -228,21 +226,23 @@ TEST_CASE("LowLevelTestSample::MyModule::TestSample", "[unit]")
 }
 ```
 
-![img](images/TestExplorerStructured.png)
+![img](images/TestExplorer.png)
 
 いよいよ実行です。テストエクスプローラーの実行アイコンや、ツリービューのコンテキストメニューから、実行することができます。...爆速で完了します。  
+
+![img](images/TestResult.png)
 
 ## まとめ
 以上、UEプロジェクトで低レベルテストを利用して、ユニットテストを書くまでの手順を紹介しました。テストのたびにエンジンを起動することがないため、テストの実行時間が短く、今までよりずっとテストを書きやすくなったと感じています。
 
 一方で、Launcher版では利用することができず、ビルド時間が長くなってしまうことに懸念があります。UnrealBuildToolの理解が浅いせいか、不意にエンジンフルビルドが走ってしまうことも多々ありました。
 
-まだ、機能に触れ始めて日が浅く、今回調べきれていないことがまだいっぱいあるので、引き続き調べていこうと思います。  
+まだ、機能に触れ始めて日が浅く、以下のような調べきれていないことがまだいっぱいあるので、引き続き調べていこうと思います。  
 
 - **UObjectのテスト**: 低レベルテストでは、UObjectのテストもサポートされていますが、プロジェクトのテストで利用するには、UObjectを自身で初期化する必要があり、一筋縄ではいかないようです。[TestGroupEvents.cpp](https://github.com/EpicGames/UnrealEngine/blob/release/Engine/Source/Programs/LowLevelTests/Tests/TestGroupEvents.cpp)のように初期化処理をCatch2のマクロで書くことができるようなので、引き続き調べていきます。  
 - **GoogleTestを使ってみる**
 - **本当にLaucher版で利用できないのか?**: Launcher版利用時のエラーを回避する方法があるかもしれません。UnrealBuildTool勉強しなければ
-- **ビルド時にテストも実行する**
+- **ビルド時にテストを自動で実行する**
 - **暗黙的テストを使ってみる**
 
 ## 参考文献
