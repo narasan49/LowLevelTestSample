@@ -7,6 +7,7 @@ Intermediate
 Plugins/*/Intermediate
 DerivedDataCache
 Saved
+enc_temp_folder
 
 *.xcodeproj
 *.xcworkspace
