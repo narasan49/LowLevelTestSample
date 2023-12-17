@@ -7,5 +7,8 @@ public class MyModuleTestsTarget: TestTargetRules
     {
         bCompileAgainstCoreUObject = true;
         bCompileAgainstApplicationCore = true;
+
+        // Enables implicit tests including tests in engine.
+        // bWithLowLevelTestsOverride = true;
     }
 }

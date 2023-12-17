@@ -15,7 +15,8 @@ public class MyModuleTests : TestModuleRules
             "MyModule",
         });
 
-        UpdateBuildGraphPropertiesFile(new Metadata { TestName = "MyModule", TestShortName = "MyModule" });
+        // This might have no effect for project's module.
+        // UpdateBuildGraphPropertiesFile(new Metadata { TestName = "MyModule", TestShortName = "MyModule", ReportType = "xml" });
     }
 
 }
