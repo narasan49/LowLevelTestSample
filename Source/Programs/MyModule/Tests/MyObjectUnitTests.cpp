@@ -3,8 +3,9 @@
 
 #include "MyObject.h"
 
+// Disable until UObjects are available in unit tests
 namespace LowLevelTestSample {
-	TEST_CASE("Name of Test", "[unit]")
+	DISABLED_TEST_CASE("LowLevelTestSample::MyModule::UObject", "[unit]")
 	{
 		SECTION("Sample")
 		{
